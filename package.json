@@ -1,6 +1,6 @@
 {
   "name": "plg-back-to-top",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "back-to-top vue component package",
   "main": "index.js",
   "scripts": {
