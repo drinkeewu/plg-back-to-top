@@ -1,0 +1,11 @@
+{
+  "name": "plg-back-to-top",
+  "version": "1.0.0",
+  "description": "back-to-top vue component package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "drinkeewu",
+  "license": "ISC"
+}
