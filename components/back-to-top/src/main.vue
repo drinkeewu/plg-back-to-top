@@ -1,9 +1,8 @@
 <template>
   <div
-    ref="backToTop"
-    class="dr-back-to-top"
-    :style="wrapperStyle"
-    @click.stop="onClick"
+    :style="styles"
+    :class="classes"
+    @click="onBack"
   >
     <slot>
       <i class="iconfont icon-arrowup" />
@@ -12,6 +11,10 @@
 </template>
 
 <script>
+import { on, off } from '../../../utils/dom';
+import { scrollTop } from '../../../utils/assist';
+
+const prefixCls = 'dr-back-top';
 export default {
   name: 'BackToTop',
   props: {
@@ -19,63 +22,67 @@ export default {
       type: Number,
       default: 200,
     },
-    customStyle: {
-      type: Object,
-      default: null,
+    bottom: {
+      type: Number,
+      default: 150,
+    },
+    right: {
+      type: Number,
+      default: 100,
+    },
+    duration: {
+      type: Number,
+      default: 1000,
     },
   },
   data() {
     return {
-      el: null,
+      backTop: false,
     };
   },
   computed: {
-    wrapperStyle() {
-      return this.customStyle;
+    styles() {
+      return {
+        bottom: `${this.bottom}px`,
+        right: `${this.right}px`,
+      };
+    },
+    classes() {
+      return [
+        `${prefixCls}`,
+        {
+          [`${prefixCls}-show`]: this.backTop,
+        },
+      ];
     },
   },
   mounted() {
-    this.initElement();
-    this.addScrollListener();
+    on(window, 'scroll', this.handleScroll);
+    on(window, 'resize', this.handleScroll);
+  },
+  beforeDestroy() {
+    off(window, 'scroll', this.handleScroll);
+    off(window, 'resize', this.handleScroll);
   },
   methods: {
-    addScrollListener() {
-      window.addEventListener('scroll', this.onScroll, false);
+    onBack() {
+      const sTop = document.documentElement.scrollTop || document.body.scrollTop;
+      scrollTop(window, sTop, 0, this.duration);
+      this.$emit('on-click');
     },
-    showCaret() {
-      this.el.style.display = 'flex';
-    },
-    hideCaret() {
-      this.el.style.display = 'none';
-    },
-    initElement() {
-      this.el = this.$refs.backToTop;
-    },
-    onScroll() {
-      const scrollTop = document.body.scrollTop
-        || document.documentElement.scrollTop
-        || 0;
-      if (scrollTop > this.height) {
-        this.showCaret();
-      } else {
-        this.hideCaret();
-      }
-    },
-    onClick() {
-      window.scroll(0, 0);
+    handleScroll() {
+      this.backTop = window.pageYOffset >= this.height;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import url('./icon/iconfont.css');
-.dr-back-to-top {
+@import url("./icon/iconfont.css");
+.dr-back-top {
   display: none;
   background-color: #fff;
   position: fixed;
-  right: 100px;
-  bottom: 150px;
   width: 40px;
   height: 40px;
   border-radius: 20px;
@@ -85,7 +92,10 @@ export default {
   z-index: 5;
   justify-content: center;
   align-items: center;
-  .icon-arrowup{
+  &.dr-back-top-show {
+    display: flex;
+  }
+  .icon-arrowup {
     color: #909399;
     display: block;
     line-height: 40px;
