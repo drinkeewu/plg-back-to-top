@@ -1,3 +1,3 @@
-import BackToTop from './src/main/vue';
+import BackToTop from './src/main.vue';
 
 export default BackToTop;
