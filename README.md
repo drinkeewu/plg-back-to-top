@@ -1,4 +1,7 @@
 # plg-back-to-top
+
+[![NPM version](https://badge.fury.io/js/plg-back-to-top.svg)](https://www.npmjs.com/package/plg-back-to-top)
+
 A component make the page back to top
 
 **Install**
