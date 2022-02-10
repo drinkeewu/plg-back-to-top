@@ -9,7 +9,7 @@
   "author": "drinkeewu",
   "license": "MIT",
   "devDependencies": {
-    "node-sass": "^4.11.0",
+    "node-sass": "^7.0.0",
     "sass-loader": "^7.1.0"
   }
 }
